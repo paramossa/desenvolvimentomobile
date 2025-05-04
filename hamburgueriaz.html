@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HamburgueriaZ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px #ccc;
+    }
+    img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    h2 {
+      text-align: center;
+      text-transform: uppercase;
+      padding: 16px 0;
+      font-size: 15px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    .checkbox-group {
+      margin-bottom: 10px;
+    }
+    .quantity {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+    .quantity button {
+      padding: 5px 10px;
+      font-size: 18px;
+    }
+    .resumo {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #eee;
+      border-radius: 5px;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    button.enviar {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://img.elo7.com.br/product/zoom/373AAA5/painel-redondo-hamburguer-painel-de-festa-infantil.jpg" alt="Logo HamburgueriaZ">
+    <h2>Faça seu pedido</h2>
+    <label for="nome">Nome do cliente:</label>
+    <input type="text" id="nome" placeholder="Digite seu nome">
+
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="bacon"> Bacon (+R$2)</label>
+      <label><input type="checkbox" id="queijo"> Queijo (+R$2)</label>
+      <label><input type="checkbox" id="onion"> Onion Rings (+R$3)</label>
+    </div>
+
+    <h2>Quantidade</h2>
+    <div class="quantity">
+      <button onclick="subtrair()">-</button>
+      <span id="quantidade">1</span>
+      <button onclick="somar()">+</button>
+    </div>
+
+    <h2>Resumo do pedido</h2>
+    <div class="resumo" id="resumo">Seu pedido aparecerá aqui.</div>
+
+    <button class="enviar" onclick="enviarPedido()">Enviar Pedido</button>
+  </div>
+
+  <script>
+    let quantidade = 1;
+
+    function somar() {
+      quantidade++;
+      document.getElementById('quantidade').textContent = quantidade;
+    }
+
+    function subtrair() {
+      if (quantidade > 1) {
+        quantidade--;
+        document.getElementById('quantidade').textContent = quantidade;
+      }
+    }
+
+    function enviarPedido() {
+      const nome = document.getElementById('nome').value || "Cliente não identificado";
+      const bacon = document.getElementById('bacon').checked ? "Sim" : "Não";
+      const queijo = document.getElementById('queijo').checked ? "Sim" : "Não";
+      const onion = document.getElementById('onion').checked ? "Sim" : "Não";
+
+      let total = 20 * quantidade;
+      if (bacon === "Sim") total += 2 * quantidade;
+      if (queijo === "Sim") total += 2 * quantidade;
+      if (onion === "Sim") total += 3 * quantidade;
+
+      const resumo = 
+`Nome do cliente: ${nome}
+Tem Bacon? ${bacon}
+Tem Queijo? ${queijo}
+Tem Onion Rings? ${onion}
+Quantidade: ${quantidade}
+Preço final: R$ ${total.toFixed(2)}`;
+
+      document.getElementById('resumo').textContent = resumo;
+
+      // Simulação de envio por e-mail (em Android seria com Intent)
+      const mailto = `mailto:?subject=Pedido de ${nome}&body=${encodeURIComponent(resumo)}`;
+      window.location.href = mailto;
+    }
+  </script>
+</body>
+</html>
